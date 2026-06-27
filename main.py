@@ -8,14 +8,20 @@ from dotenv import load_dotenv
 import asyncio
 from aiohttp import web
 
-load_dotenv()
-
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-if not BOT_TOKEN:
-    raise RuntimeError("Le jeton du bot est manquant dans le fichier .env (BOT_TOKEN).")
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("divisionmanagerbot")
+
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env")
+
+BOT_TOKEN = (
+    os.getenv("BOT_TOKEN")
+    or os.getenv("DISCORD_TOKEN")
+    or os.getenv("TOKEN")
+)
+if not BOT_TOKEN:
+    raise RuntimeError(
+        "Le jeton du bot est manquant. Ajoute BOT_TOKEN (ou DISCORD_TOKEN/TOKEN) dans les variables d'environnement de Railway/Render."
+    )
 
 intents = discord.Intents.default()
 intents.guilds = True
