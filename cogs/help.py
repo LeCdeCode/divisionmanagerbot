@@ -94,31 +94,31 @@ class HelpView(View):
 
 
 class HelpCategorySelect(Select):
-    def __init__(self, view: HelpView):
+    def __init__(self, help_view: HelpView):
         options = [
             discord.SelectOption(label=name, description=data["description"], value=name)
             for name, data in COMMAND_CATEGORIES.items()
         ]
         super().__init__(placeholder="Choisis une catégorie", min_values=1, max_values=1, options=options)
-        self.view = view
+        self.help_view = help_view
 
     async def callback(self, interaction: discord.Interaction) -> None:
-        self.view.category = self.values[0]
-        await interaction.response.edit_message(embed=self.view.build_embed(), view=self.view)
+        self.help_view.category = self.values[0]
+        await interaction.response.edit_message(embed=self.help_view.build_embed(), view=self.help_view)
 
 
 class HelpModeSelect(Select):
-    def __init__(self, view: HelpView):
+    def __init__(self, help_view: HelpView):
         options = [
             discord.SelectOption(label="Aperçu", description="Résumé rapide de chaque commande", value="Aperçu"),
             discord.SelectOption(label="Détails", description="Description approfondie et cas d'usage", value="Détails"),
         ]
         super().__init__(placeholder="Choisis le niveau d'information", min_values=1, max_values=1, options=options)
-        self.view = view
+        self.help_view = help_view
 
     async def callback(self, interaction: discord.Interaction) -> None:
-        self.view.mode = self.values[0]
-        await interaction.response.edit_message(embed=self.view.build_embed(), view=self.view)
+        self.help_view.mode = self.values[0]
+        await interaction.response.edit_message(embed=self.help_view.build_embed(), view=self.help_view)
 
 
 class HelpCog(commands.Cog):
