@@ -441,6 +441,6 @@ class RecruitmentManager(commands.Cog):
         view = RecruitmentSelectView(ctx.author, self.bot)
         await ctx.send(embed=embed, view=view)
 
-def setup(bot: commands.Bot) -> None:
-    bot.add_cog(RecruitmentManager(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(RecruitmentManager(bot))
 

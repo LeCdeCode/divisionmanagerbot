@@ -424,5 +424,5 @@ class DivisionManager(commands.Cog):
         else:
             raise error
 
-def setup(bot: commands.Bot) -> None:
-    bot.add_cog(DivisionManager(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(DivisionManager(bot))

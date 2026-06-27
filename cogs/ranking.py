@@ -334,5 +334,5 @@ class RankingManager(commands.Cog):
         except discord.Forbidden:
             await msg.edit(content="❌ Je n'ai pas les permissions nécessaires.", embed=None, view=None)
 
-def setup(bot: commands.Bot) -> None:
-    bot.add_cog(RankingManager(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(RankingManager(bot))

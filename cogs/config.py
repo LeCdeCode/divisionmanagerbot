@@ -502,5 +502,5 @@ class ConfigManager(commands.Cog):
         
         await view.show_current_step(ctx)
 
-def setup(bot: commands.Bot) -> None:
-    bot.add_cog(ConfigManager(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(ConfigManager(bot))
