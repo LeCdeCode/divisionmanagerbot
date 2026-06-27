@@ -1,3 +1,4 @@
+import os
 import discord
 from discord.ext import commands
 from discord.ui import View, Button, Modal, TextInput
@@ -10,8 +11,8 @@ from .utils import (
     get_member_join_date, count_division_members, DIVISIONS
 )
 
-DATA_DIR = Path(__file__).parent.parent / "data"
-DATA_DIR.mkdir(exist_ok=True)
+DATA_DIR = Path(os.getenv("DATA_DIR", os.getenv("RAILWAY_VOLUME_MOUNT_PATH", str(Path(__file__).parent.parent / "data"))))
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 PROFILES_FILE = DATA_DIR / "member_profiles.json"
 DIVISION_PROFILES_FILE = DATA_DIR / "division_profiles.json"
 

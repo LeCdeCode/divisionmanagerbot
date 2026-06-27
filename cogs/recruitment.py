@@ -1,3 +1,4 @@
+import os
 import discord
 from discord.ext import commands
 from discord.ui import View, Select, Button, select
@@ -14,8 +15,8 @@ from .utils import (
     LIEUTENANT_ROLE_ID, VICE_CAPTAIN_ROLE_ID, DIVISION_CAPTAIN_ROLE_ID
 )
 
-DATA_DIR = Path(__file__).parent.parent / "data"
-DATA_DIR.mkdir(exist_ok=True)
+DATA_DIR = Path(os.getenv("DATA_DIR", os.getenv("RAILWAY_VOLUME_MOUNT_PATH", str(Path(__file__).parent.parent / "data"))))
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 APPLICATIONS_FILE = DATA_DIR / "applications.json"
 
 # Configuration des divisions avec channels supplémentaires

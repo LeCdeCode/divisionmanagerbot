@@ -1,10 +1,12 @@
+import os
 import discord
 from discord.ext import commands
 from discord.ui import Modal, TextInput
 from typing import Optional
 from pathlib import Path
 
-DATA_DIR = Path(__file__).parent.parent / "data"
+DATA_DIR = Path(os.getenv("DATA_DIR", os.getenv("RAILWAY_VOLUME_MOUNT_PATH", str(Path(__file__).parent.parent / "data"))))
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 class ConfigNameModal(Modal, title="Nom de la division"):
     custom_name = TextInput(

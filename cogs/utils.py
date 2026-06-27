@@ -1,11 +1,12 @@
+import os
 import discord
 from pathlib import Path
 from datetime import datetime, timedelta
 import json
 from typing import Optional, List, Tuple
 
-DATA_DIR = Path(__file__).parent.parent / "data"
-DATA_DIR.mkdir(exist_ok=True)
+DATA_DIR = Path(os.getenv("DATA_DIR", os.getenv("RAILWAY_VOLUME_MOUNT_PATH", str(Path(__file__).parent.parent / "data"))))
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 BANS_FILE = DATA_DIR / "bans.json"
 KICK_COOLDOWNS_FILE = DATA_DIR / "kick_cooldowns.json"
