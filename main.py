@@ -47,21 +47,22 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError) 
         raise error
 
 
-def load_extensions() -> None:
+async def load_extensions() -> None:
     cogs_path = Path(__file__).parent / "cogs"
     for path in cogs_path.glob("*.py"):
         if path.name == "__init__.py":
             continue
         extension_name = f"cogs.{path.stem}"
         try:
-            bot.load_extension(extension_name)
+            await bot.load_extension(extension_name)
             logger.info("Extension chargée : %s", extension_name)
         except Exception:
             logger.exception("Impossible de charger l'extension %s", extension_name)
 
 
-if __name__ == "__main__":
-    load_extensions()
+async def main_async() -> None:
+    await load_extensions()
+
     # Optional keep-alive webserver for environments that require pinging (e.g., some free hosts)
     keep_alive = os.getenv("KEEP_ALIVE", "false").lower() in ("1", "true", "yes")
     if keep_alive:
@@ -78,8 +79,13 @@ if __name__ == "__main__":
             await site.start()
 
         try:
-            bot.loop.create_task(start_webserver())
+            asyncio.create_task(start_webserver())
             logger.info("Keep-alive webserver scheduled on port %s", os.getenv("PORT", 8080))
         except Exception:
             logger.exception("Impossible de démarrer le serveur keep-alive")
-    bot.run(BOT_TOKEN)
+
+    await bot.start(BOT_TOKEN)
+
+
+if __name__ == "__main__":
+    asyncio.run(main_async())
