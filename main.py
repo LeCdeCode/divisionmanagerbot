@@ -48,12 +48,15 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError) 
 
 
 async def load_extensions() -> None:
-    cogs_path = Path(__file__).parent / "cogs"
-    skip_files = {"__init__.py", "utils.py", "config_modals.py"}
-    for path in cogs_path.glob("*.py"):
-        if path.name in skip_files:
-            continue
-        extension_name = f"cogs.{path.stem}"
+    extensions = [
+        "cogs.recruitment",
+        "cogs.ranking",
+        "cogs.division_manager",
+        "cogs.help",
+        "cogs.config",
+        "cogs.profile",
+    ]
+    for extension_name in extensions:
         try:
             await bot.load_extension(extension_name)
             logger.info("Extension chargée : %s", extension_name)
