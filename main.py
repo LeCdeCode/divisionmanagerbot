@@ -5,6 +5,8 @@ from pathlib import Path
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+import asyncio
+from aiohttp import web
 
 load_dotenv()
 
@@ -54,4 +56,24 @@ def load_extensions() -> None:
 
 if __name__ == "__main__":
     load_extensions()
+    # Optional keep-alive webserver for environments that require pinging (e.g., some free hosts)
+    keep_alive = os.getenv("KEEP_ALIVE", "false").lower() in ("1", "true", "yes")
+    if keep_alive:
+        async def _handle(request):
+            return web.Response(text="ok")
+
+        async def start_webserver():
+            port = int(os.getenv("PORT", 8080))
+            app = web.Application()
+            app.add_routes([web.get("/", _handle)])
+            runner = web.AppRunner(app)
+            await runner.setup()
+            site = web.TCPSite(runner, "0.0.0.0", port)
+            await site.start()
+
+        try:
+            bot.loop.create_task(start_webserver())
+            logger.info("Keep-alive webserver scheduled on port %s", os.getenv("PORT", 8080))
+        except Exception:
+            logger.exception("Impossible de démarrer le serveur keep-alive")
     bot.run(BOT_TOKEN)
